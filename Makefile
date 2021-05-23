@@ -11,16 +11,19 @@ INCLUDES = -I. -Iinclude -Ilib -I/usr/local/include -I/usr/local/include/ImageMa
 CPP_SRC = src/main.cpp src/ast.cpp src/canvas.cpp src/environment.cpp src/function_call.cpp src/operator.cpp src/value.cpp
 
 .PHONY: all
-all: parser debug
+all: build debug
+
+.PHONY: build
+build: quickdeck
 
 .PHONY: debug
-debug: debug_parser
+debug: quickdeck_debug
 
-parser: lex.yy.c parser.tab.cc $(CPP_SRC)
-	$(CC) $(COMPILER_FLAGS) -o parser $(CPP_SRC) parser.tab.cc lex.yy.c $(INCLUDES) $(LINKER_FLAGS)
+quickdeck: lex.yy.c parser.tab.cc $(CPP_SRC)
+	$(CC) $(COMPILER_FLAGS) -o quickdeck $(CPP_SRC) parser.tab.cc lex.yy.c $(INCLUDES) $(LINKER_FLAGS)
 
-debug_parser: lex.yy.c parser.tab.cc $(CPP_SRC)
-	$(CC) $(DEBUG) $(COMPILER_FLAGS) -o parser_debug $(CPP_SRC) parser.tab.cc lex.yy.c $(INCLUDES) $(LINKER_FLAGS)
+quickdeck_debug: lex.yy.c parser.tab.cc $(CPP_SRC)
+	$(CC) $(DEBUG) $(COMPILER_FLAGS) -o quickdeck_debug $(CPP_SRC) parser.tab.cc lex.yy.c $(INCLUDES) $(LINKER_FLAGS)
 
 lex.yy.c: parser.tab.hh src/lexer.l
 	flex src/lexer.l
