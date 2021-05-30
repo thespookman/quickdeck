@@ -119,3 +119,4 @@ Now `make all` produces the following images:
 ![Troll](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/ogre.png?token=ACJ7E5ABHA67OMZ7VBQHFZDAWPDZY)
 ![Ogre](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/troll.png?token=ACJ7E5AYKJZWKCDQ2RCVF7DAWPD2Y)
 
+Also, any changes to any of the images, the data in the csv, or `make_monsters.qd` will only cause the necessary images to be rebuilt!
