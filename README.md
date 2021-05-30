@@ -113,3 +113,9 @@ all: $(CARDS)
         ./quickdeck $< make_monsters.qd
 ```
 
+Now `make all` produces the following images:
+
+![Goblin](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/goblin.png?token=ACJ7E5CCCYJKCPEQTKDTCVLAWPDW2)
+![Troll](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/ogre.png?token=ACJ7E5ABHA67OMZ7VBQHFZDAWPDZY)
+![Ogre](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/troll.png?token=ACJ7E5AYKJZWKCDQ2RCVF7DAWPD2Y)
+
