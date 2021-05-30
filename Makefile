@@ -2,7 +2,7 @@ CC = g++
 
 COMPILER_FLAGS = -std=c++17 -Wall `Magick++-config --cxxflags --cppflags`
 
-DEBUG = -DDEBUG_BUILD
+DEBUG = -g -O0 -DDEBUG_BUILD
 
 LINKER_FLAGS = -Llib -L/usr/local/lib -lSPKlog `Magick++-config --ldflags --libs`
 
