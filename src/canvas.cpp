@@ -1,10 +1,12 @@
 #include "canvas.h"
 
+#include <fstream>
 #include <stdexcept>
 #include <vector>
 
 Canvas::Canvas (Logger* _l) : l {_l} {
-    init = false;
+    depends = "";
+    init    = false;
     try {
         transparent = Color ("#00000000");
     } catch (Warning& w) {
@@ -35,8 +37,15 @@ void Canvas::create_canvas (int width, int height) {
 void Canvas::save_card (const char* filename) {
     if (!check_init ("SAVE")) return;
     l->inf () << "Saving to " << filename << std::endl;
+    depends = std::string (filename) + ": " + depends;
+    std::string depends_file (filename);
+    depends_file += ".d";
     try {
         canvas.write (filename);
+        std::ofstream ofs;
+        ofs.open (depends_file);
+        ofs << depends;
+        ofs.close ();
     } catch (Warning& w) {
         l->inf () << "Warning: " << w.what () << std::endl;
     } catch (std::exception& e) { l->err () << "Could not save file: " << e.what () << std::endl; }
@@ -83,6 +92,8 @@ void Canvas::text (char* text, char* font, int x, int y, std::string colour) {
 void Canvas::image (char* filename, int x, int y, int width, int height) {
     if (!check_init ("IMAGE")) return;
     l->inf () << "Drawing image: " << filename << std::endl;
+    depends += filename;
+    depends += " ";
     try {
         canvas.draw (DrawableCompositeImage (x, y, width, height, filename));
     } catch (Warning& w) {

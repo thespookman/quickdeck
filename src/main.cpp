@@ -2,8 +2,8 @@
 #include "environment.h"
 #include "location.hh"
 #include "parser.h"
-#include "parser.tab.hh"
 #include "position.hh"
+#include "script.tab.hh"
 #include "stack.hh"
 
 #include <iostream>
@@ -20,6 +20,7 @@ int main (int argc, char** argv) {
     }
     Environment* e    = new Environment (l);
     Statement*   tree = parse_file (argv[1], l, e);
+    if (!tree) return 1;
     for (int i = 2; i < argc; ++i) tree->link (parse_file (argv[i], l, e));
     if (!tree) return 1;
     l->dbg () << tree->describe () << std::endl;

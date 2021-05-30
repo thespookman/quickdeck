@@ -115,7 +115,10 @@ Statement* parse_file(char* file_name, Logger* _l, Environment* _e){
 	l=_l;
 	e=_e;
 	FILE *file=fopen(file_name, "r");
-	if(!file) throw std::runtime_error("Can't open file");
+	if(!file) {
+		l->err() << "Can't open " << file_name << std::endl;
+		return NULL;
+	}
 	yyin=file;
 	yy::parser parser;
 #ifdef DEBUG_BUILD
