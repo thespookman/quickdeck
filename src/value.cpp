@@ -17,8 +17,8 @@ Value::Value (bool _v) {
     type = BOOL;
 }
 
-Value::Value (char* _v) {
-    v.s  = _v;
+Value::Value (std::string _v) {
+    v.s  = strdup (_v.c_str ());
     type = STRING;
 }
 
@@ -34,11 +34,11 @@ bool Value::b () {
     return false;
 }
 
-char* Value::s () {
-    if (type == Value::STRING) return v.s;
-    if (type == Value::DOUBLE) return strdup (std::to_string (v.d).c_str ());
-    if (v.b) return strdup ("TRUE");
-    return strdup ("FALSE");
+std::string Value::s () {
+    if (type == Value::STRING) return std::string (v.s);
+    if (type == Value::DOUBLE) return std::to_string (v.d);
+    if (v.b) return "TRUE";
+    return "FALSE";
 }
 
 std::ostream& operator<< (std::ostream& os, Value v) { return os << v.s (); }
@@ -46,7 +46,7 @@ std::ostream& operator<< (std::ostream& os, Value v) { return os << v.s (); }
 Value Value::operator! () { return Value (!b ()); }
 
 Value Value::operator+ (Value right) {
-    if (type == Value::STRING) return Value (strcat (s (), right.s ()));
+    if (type == Value::STRING) return Value (s () + right.s ());
     return Value (d () + right.d ());
 }
 
@@ -73,7 +73,7 @@ Value Value::operator== (Value right) {
     switch (type) {
     case Value::DOUBLE: return Value (d () == right.d ());
     case Value::BOOL: return Value (b () == right.b ());
-    case Value::STRING: return Value (strcmp (s (), right.s ()) == 0);
+    case Value::STRING: return Value (s ().compare (right.s ()));
     }
     return false;
 }
@@ -83,7 +83,7 @@ Value Value::operator!= (Value right) {
     switch (type) {
     case Value::DOUBLE: return Value (d () != right.d ());
     case Value::BOOL: return Value (b () != right.b ());
-    case Value::STRING: return Value (strcmp (s (), right.s ()) != 0);
+    case Value::STRING: return Value (!s ().compare (right.s ()));
     }
     return false;
 }

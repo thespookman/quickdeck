@@ -2,6 +2,7 @@
 #define VALUE_H_
 
 #include <ostream>
+#include <string>
 
 union V {
     double d;
@@ -21,10 +22,10 @@ class Value {
     Value (double _v);
     Value (int _v);
     Value (bool _v);
-    Value (char* _v);
+    Value (std::string _v);
     double               d ();
     bool                 b ();
-    char*                s ();
+    std::string          s ();
     friend std::ostream& operator<< (std::ostream& os, Value v);
     Value                operator! ();
     Value                operator+ (Value right);

@@ -39,7 +39,10 @@ Value Statement::evaluate () {
 
 Statement::~Statement () {
     l->dbg () << "Deleting statement " << description << std::endl;
-    if (next) delete next;
+    if (next) {
+        delete next;
+        next = NULL;
+    }
 }
 
 Expression::Expression (Logger* _l) : l {_l} { description = "EXPRESSION "; }
@@ -64,9 +67,9 @@ Boolean::Boolean (bool _value, Logger* _l) : Expression (_l) {
 
 Value Boolean::evaluate () { return Value (value); }
 
-Text::Text (char* _value, Logger* _l) : Expression (_l) {
-    value       = strdup (_value);
-    description = std::string (value) + " ";
+Text::Text (std::string _value, Logger* _l) : Expression (_l) {
+    value       = _value;
+    description = value + " ";
     l->dbg () << "TEXT: " << value << std::endl;
 }
 
@@ -74,7 +77,7 @@ Value Text::evaluate () { return Value (value); }
 
 void Text::describe () { std::cout << '"' << value << '"' << std::endl; }
 
-Text::~Text () { delete value; }
+Text::~Text () {}
 
 If_Statement::If_Statement (Expression* _condition, Statement* _then, Statement* _else, Logger* _l)
     : Statement (_l) {
@@ -100,9 +103,18 @@ If_Statement::If_Statement (Expression* _condition, Statement* _then, Logger* _l
     : If_Statement (_condition, _then, NULL, _l) {}
 
 If_Statement::~If_Statement () {
-    if (condition) delete condition;
-    if (then_do) delete then_do;
-    if (else_do) delete else_do;
+    if (condition) {
+        delete condition;
+        condition = NULL;
+    }
+    if (then_do) {
+        delete then_do;
+        then_do = NULL;
+    }
+    if (else_do) {
+        delete else_do;
+        else_do = NULL;
+    }
     l->dbg () << "Deleting IF" << std::endl;
 }
 
@@ -120,17 +132,23 @@ void Parameter::get (std::vector<Expression*>* param_list) {
 void Parameter::link (Parameter* _next) { next = _next; }
 
 Parameter::~Parameter () {
-    if (expression) delete expression;
-    if (next) delete next;
+    if (expression) {
+        delete expression;
+        expression = NULL;
+    }
+    if (next) {
+        delete next;
+        next = NULL;
+    }
     l->dbg () << "Deleting Parameter" << std::endl;
 };
 
-Assignment::Assignment (char* _variable, Expression* _value, Environment* _e, Logger* _l)
+Assignment::Assignment (std::string _variable, Expression* _value, Environment* _e, Logger* _l)
     : Statement (_l) {
     variable    = _variable;
     value       = _value;
     e           = _e;
-    description = std::string (variable) + " = " + value->describe () + ";\n";
+    description = variable + " = " + value->describe () + ";\n";
     l->dbg () << "ASSIGNMENT " << variable << std::endl;
 }
 
@@ -141,9 +159,11 @@ Value Assignment::evaluate () {
 }
 
 Assignment::~Assignment () {
-    if (value) delete value;
+    if (value) {
+        delete value;
+        value = NULL;
+    }
     l->dbg () << "Deleting assignment: " << variable << std::endl;
-    delete variable;
 }
 
 Variable::Variable (std::string _variable, Environment* _e, Logger* _l) : Expression (_l) {

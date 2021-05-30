@@ -1,5 +1,6 @@
 #include "canvas.h"
 
+#include <cstdlib>
 #include <fstream>
 #include <stdexcept>
 #include <vector>
@@ -16,7 +17,7 @@ Canvas::Canvas (Logger* _l) : l {_l} {
     }
 }
 
-bool Canvas::check_init (const char* action) {
+bool Canvas::check_init (std::string action) {
     if (init) return true;
     l->err () << "Canvas has not been created, skipping action: " << action << std::endl;
     return false;
@@ -34,7 +35,7 @@ void Canvas::create_canvas (int width, int height) {
     }
 }
 
-void Canvas::save_card (const char* filename) {
+void Canvas::save_card (std::string filename) {
     if (!check_init ("SAVE")) return;
     l->inf () << "Saving to " << filename << std::endl;
     depends = std::string (filename) + ": " + depends;
@@ -65,7 +66,8 @@ void Canvas::rectangle (bool fill, int x, int y, int width, int height, int thic
         if (!fill) {
             l->dbg () << "Setting no fill." << std::endl;
             draw_list.push_back (DrawableFillOpacity (0));
-        }
+        } else
+            draw_list.push_back (DrawableFillColor (c));
         canvas.draw (draw_list);
     } catch (Warning& w) {
         l->inf () << "Warning: " << w.what () << std::endl;
@@ -74,7 +76,7 @@ void Canvas::rectangle (bool fill, int x, int y, int width, int height, int thic
     }
 }
 
-void Canvas::text (char* text, char* font, int x, int y, std::string colour) {
+void Canvas::text (std::string text, std::string font, int x, int y, std::string colour) {
     if (!check_init ("TEXT")) return;
     l->inf () << "Drawing text: " << text << std::endl;
     try {
@@ -89,7 +91,7 @@ void Canvas::text (char* text, char* font, int x, int y, std::string colour) {
     } catch (std::exception& e) { l->err () << "Could not draw text: " << e.what () << std::endl; }
 }
 
-void Canvas::image (char* filename, int x, int y, int width, int height) {
+void Canvas::image (std::string filename, int x, int y, int width, int height) {
     if (!check_init ("IMAGE")) return;
     l->inf () << "Drawing image: " << filename << std::endl;
     depends += filename;

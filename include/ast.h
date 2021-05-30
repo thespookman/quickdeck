@@ -65,10 +65,10 @@ class Boolean : public Expression {
 
 class Text : public Expression {
   private:
-    char* value;
+    std::string value;
 
   public:
-    Text (char* _value, Logger* _l);
+    Text (std::string _value, Logger* _l);
     void  describe ();
     Value evaluate () override;
     ~Text ();
@@ -128,12 +128,12 @@ class Variable : public Expression {
 
 class Assignment : public Statement {
   private:
-    char*        variable;
+    std::string  variable;
     Expression*  value;
     Environment* e;
 
   public:
-    Assignment (char* _variable, Expression* _value, Environment* _e, Logger* _l);
+    Assignment (std::string _variable, Expression* _value, Environment* _e, Logger* _l);
     void  describe ();
     Value evaluate () override;
     ~Assignment ();
