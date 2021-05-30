@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cstring>
 #include <fstream>
+#include <sstream>
 #include <stdexcept>
 #include <vector>
 
@@ -23,6 +24,7 @@ std::vector<std::string> header_vec;
 std::vector<Value*> data_vec;
 
 std::ofstream ofs;
+std::ifstream ifs;
 
 void process_line();
 
@@ -91,23 +93,39 @@ void process_line(){
 		data_vec.clear();
 		return;
 	}
+	std::stringstream ss;
+	for(unsigned int i=0; i<cols; ++i){
+		try {
+			ss << header_vec[i] << " = " << *data_vec[i] << "; ";		
+		} catch (std::exception& e) {
+			l->err() << e.what() << std::endl;
+		}
+	}
+	std::string to_write = ss.str();
 	try {
-		ofs.open(data_vec[0]->s());
+		ifs.open(data_vec[0]->s());
+		std::string old_data;
+		std::getline(ifs, old_data);
+		ifs.close();
+		if(to_write.compare(old_data)==0) {
+			l->dbg() << *data_vec[0] << " is unchanged. Skipping." << std::endl;
+			data_vec.clear();
+			return;
+		}
 	} catch (std::exception& e) {
-		l->err() << "Could not open "<< data_vec[0] << " for writing: " << std::endl;
+		l->inf() << "Couldn't open " << *data_vec[0] << " for reading. Skipping to writing." << std::endl;
+	}
+	try {
+		ofs.open(data_vec[0]->s(), std::ofstream::out | std::ofstream::trunc);
+		ofs << to_write;
+		ofs.close();
+	} catch (std::exception& e) {
+		l->err() << "Could not open "<< *data_vec[0] << " for writing: " << std::endl;
 		l->err() << e.what() << std::endl;
 		l->err() << "Skipping." <<std::endl;
 		data_vec.clear();
 		return;
 	}
-	for(unsigned int i=0; i<cols; ++i){
-		try {
-			ofs << header_vec[i] << " = " << *data_vec[i] << ";" << std::endl;		
-		} catch (std::exception& e) {
-			l->err() << e.what() << std::endl;
-		}
-	}
-	ofs.close();
 	data_vec.clear();
 }
 
