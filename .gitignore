@@ -1,5 +1,6 @@
 *.tab.cc
 *.tab.hh
+*.yy.c
 *.swp
 *.hh
 params
