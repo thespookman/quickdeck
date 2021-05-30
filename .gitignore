@@ -1,0 +1,8 @@
+*.tab.cc
+*.tab.hh
+*.swp
+*.hh
+params
+params_debug
+quickdeck
+quickdeck_debug
