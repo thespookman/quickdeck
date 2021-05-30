@@ -10,11 +10,12 @@ using namespace Magick;
 
 class Canvas {
   private:
-    Logger* l;
-    Image   canvas;
-    bool    init = false;
-    bool    check_init (const char* action);
-    Color   transparent;
+    Logger*     l;
+    Image       canvas;
+    bool        init = false;
+    bool        check_init (const char* action);
+    Color       transparent;
+    std::string depends;
 
   public:
     Canvas (Logger* _l);
