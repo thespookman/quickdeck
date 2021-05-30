@@ -24,7 +24,7 @@ yylloc->step();
 "false"         	{ yylval->b = false; return token::BOOLEAN; }
 [0-9]*"."?[0-9]+        { yylval->d = atof(yytext); return token::NUMBER; }
 [a-z][a-z0-9]*  	{ yylval->c=strdup(yytext); return token::VARIABLE; }
-\"(\\\"|[^"\n])*\"      { yylval->c=strdup(yytext+1); yylval->c[yyleng-2]=0; return token::STRING; }
+\"(\\\"|[^"\n])*\"      { yylval->c=strdup(yytext); return token::STRING; }
 
 [ \t]			{ yylloc->step(); }
 \n			{ ++yylineno; yycolumn = 1; return token::ENDL; }

@@ -102,25 +102,27 @@ void process_line(){
 		}
 	}
 	std::string to_write = ss.str();
+	std::string tmp=data_vec[0]->s();
+	std::string file_name = tmp.substr(1,tmp.length()-2) + ".qd";
 	try {
-		ifs.open(data_vec[0]->s());
+		ifs.open(file_name);
 		std::string old_data;
 		std::getline(ifs, old_data);
 		ifs.close();
 		if(to_write.compare(old_data)==0) {
-			l->dbg() << *data_vec[0] << " is unchanged. Skipping." << std::endl;
+			l->dbg() << file_name << " is unchanged. Skipping." << std::endl;
 			data_vec.clear();
 			return;
 		}
 	} catch (std::exception& e) {
-		l->inf() << "Couldn't open " << *data_vec[0] << " for reading. Skipping to writing." << std::endl;
+		l->inf() << "Couldn't open " << file_name << " for reading. Skipping to writing." << std::endl;
 	}
 	try {
-		ofs.open(data_vec[0]->s(), std::ofstream::out | std::ofstream::trunc);
+		ofs.open(file_name, std::ofstream::out | std::ofstream::trunc);
 		ofs << to_write;
 		ofs.close();
 	} catch (std::exception& e) {
-		l->err() << "Could not open "<< *data_vec[0] << " for writing: " << std::endl;
+		l->err() << "Could not open "<< file_name << " for writing: " << std::endl;
 		l->err() << e.what() << std::endl;
 		l->err() << "Skipping." <<std::endl;
 		data_vec.clear();
