@@ -1,10 +1,7 @@
 #include "ast.h"
 #include "environment.h"
-#include "location.hh"
 #include "parser.h"
-#include "position.hh"
 #include "script.tab.hh"
-#include "stack.hh"
 
 #include <iostream>
 
