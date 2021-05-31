@@ -55,7 +55,7 @@ Draws a rectangle at (x, y) of size width x height. If fill is true, it will be 
 
 ### text ( text, font, x, y, colour)
 
-Draws text at (x, y). Font is a standard unix font descriptor string thing. If font is left as `""` you'll get the default system font.
+Draws text at (x, y). Font the path of a font file. If font is left as `""` you'll get the default system font.
 
 ### image ( filename, x, y, width, height )
 
