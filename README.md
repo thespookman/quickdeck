@@ -118,8 +118,8 @@ $(SCRIPTS): stats.csv
 
 Now `make all` produces the following images:
 
-![Goblin](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/goblin.png?token=ACJ7E5CCCYJKCPEQTKDTCVLAWPDW2)
-![Troll](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/ogre.png?token=ACJ7E5ABHA67OMZ7VBQHFZDAWPDZY)
-![Ogre](https://raw.githubusercontent.com/thespookman/quickdeck/docs/example/troll.png?token=ACJ7E5AYKJZWKCDQ2RCVF7DAWPD2Y)
+![Goblin](https://raw.githubusercontent.com/thespookman/quickdeck/main/example/goblin.png?token=ACJ7E5HGOLJWT64UWWRUZKDAWSVHS)
+![Troll](https://raw.githubusercontent.com/thespookman/quickdeck/main/example/ogre.png?token=ACJ7E5CP5BWRUEDZPXZDYE3AWSVIM)
+![Ogre](https://raw.githubusercontent.com/thespookman/quickdeck/main/example/troll.png?token=ACJ7E5GYXFXCUPJBJVFLZ2DAWSVJC)
 
 Also, any changes to any of the images, the data in the csv, or `make_monsters.qd` will only cause the necessary images to be rebuilt!
