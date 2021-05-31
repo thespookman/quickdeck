@@ -1,6 +1,12 @@
+# Introduction
+
+Quickdeck is a program for building decks of cards using a script. I had used nanDECK (http://www.nandeck.com/) in the past, but for my current project I'm using a lot of Linux tools, and didn't want to have to split my workflow between Windows and Linux. That said, Quickdeck _should_ work OK on Windows, assuming ImageMagick is installed, but I haven't tried.
+
+As you'll probably gather, I've just written this to do what I need it to do for one project, with my own needs in mind (e.g. this program is run from the command line, and has no built in editor). I'll probably add more features as I need them, but feel free to open an issue if you'd like me to add anything (I have no intention of adding a GUI or editor, but will happily extend the script parser or add more options for drawing graphics).
+
 # Building
 
-If you want to build this, you'll need ImageMagick. Don't know why, but I couldn't get it to work with the packages from the Debian repos, so go to the github repo linked from the ImageMagick website. I compiled ImageMagick without shared libraries so it would automatically link to the static ones, but you do you.
+If you want to build this, you'll need ImageMagick. Don't know why (didn't bother to look into it), but I couldn't get it to work with the packages from the Debian repos, so I installed from the github repo linked here: https://www.imagemagick.org/Magick++/. I compiled ImageMagick without shared libraries so it would automatically link to the static ones, because I wanted it statically linked. If you have the shared libraries for Magick++ it _should_ automatically link dynamically.
 
 - `make build` builds both the programs.  
 - `make debug` builds a debug version of both programs that sharts loads of info onto standard out.  
@@ -119,8 +125,8 @@ $(SCRIPTS): stats.csv
 
 Now `make all` produces the following images:
 
-![Goblin](https://raw.githubusercontent.com/thespookman/quickdeck/font-size/example/goblin.png?token=ACJ7E5FJKCW5RODEV3U2RLDAWS2NO)
-![Troll](https://raw.githubusercontent.com/thespookman/quickdeck/font-size/example/troll.png?token=ACJ7E5AMLISTMTNGDSA6NVTAWS2PA)
-![Ogre](https://raw.githubusercontent.com/thespookman/quickdeck/font-size/example/ogre.png?token=ACJ7E5C27LWWDE3MPCVKDXLAWS2OK)
+![Goblin](https://raw.githubusercontent.com/thespookman/quickdeck/main/example/goblin.png?token=ACJ7E5AJGR42R35KGOFJPLDAWTQLW)
+![Troll](https://raw.githubusercontent.com/thespookman/quickdeck/main/example/troll.png?token=ACJ7E5BEMKRPPPF4TN2K5DLAWTQOA)
+![Ogre](https://raw.githubusercontent.com/thespookman/quickdeck/main/example/ogre.png?token=ACJ7E5HQYB6FXJZKGHJCQNLAWTQMW)
 
 Also, any changes to any of the images, the data in the csv, or `make_monsters.qd` will only cause the necessary images to be rebuilt!
