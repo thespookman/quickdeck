@@ -75,7 +75,7 @@ Value Function_Call::evaluate () {
         break;
     };
     if (next) return next->evaluate ();
-    return Value (true);
+    return Value (true, l);
 }
 
 Function_Call::~Function_Call () {

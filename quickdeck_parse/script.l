@@ -54,8 +54,8 @@ yylloc->step();
 "true"		{ yylval->b = true; return token::BOOLEAN; }
 "false" 	{ yylval->b = false; return token::BOOLEAN; }
 [0-9]*"."?[0-9]+	{ yylval->d = atof(yytext); return token::NUMBER; }
-[a-z][a-z0-9]*		{ yylval->c=strdup(yytext); return token::VARIABLE; }
-\"(\\\"|[^"\n])*\"	{ yylval->c=strdup(yytext+1); yylval->c[yyleng-2]=0; return token::STRING; }
+[a-z][a-z0-9]*		{ yylval->c = strdup(yytext); return token::VARIABLE; }
+\"(\\\"|[^"\n])*\"	{ yylval->c = strdup(yytext+1); yylval->c[yyleng-2] = 0; return token::STRING; }
 
 <<EOF>>	{ return 0; }
 

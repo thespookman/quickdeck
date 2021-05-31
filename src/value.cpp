@@ -2,24 +2,45 @@
 
 #include <cstring>
 
-Value::Value (double _v) {
+Value::Value (double _v, Logger* _l) : l {_l} {
     v.d  = _v;
     type = DOUBLE;
+    l->dbg () << "New double value " << s () << std::endl;
 }
 
-Value::Value (int _v) {
+Value::Value (int _v, Logger* _l) : l {_l} {
     v.d  = _v;
     type = DOUBLE;
+    l->dbg () << "New double value " << s () << std::endl;
 }
 
-Value::Value (bool _v) {
+Value::Value (bool _v, Logger* _l) : l {_l} {
     v.b  = _v;
     type = BOOL;
+    l->dbg () << "New bool value " << s () << std::endl;
 }
 
-Value::Value (std::string _v) {
-    v.s  = strdup (_v.c_str ());
+Value::Value (const char* _v, Logger* _l) : l {_l} {
+    v.s  = strdup (_v);
     type = STRING;
+    l->dbg () << "New string value " << s () << std::endl;
+}
+
+Value::Value (std::string _v, Logger* _l) : l {_l} {
+    const char* c = _v.c_str ();
+    v.s           = strdup (c);
+    type          = STRING;
+    l->dbg () << "New string value " << s () << std::endl;
+}
+
+Value::Value (const Value& _v) {
+    l    = _v.l;
+    type = _v.type;
+    switch (type) {
+    case DOUBLE: v.d = _v.v.d; break;
+    case BOOL: v.b = _v.v.b; break;
+    case STRING: v.s = strdup (_v.v.s); break;
+    }
 }
 
 double Value::d () {
@@ -37,53 +58,59 @@ bool Value::b () {
 std::string Value::s () {
     if (type == Value::STRING) return std::string (v.s);
     if (type == Value::DOUBLE) return std::to_string (v.d);
-    if (v.b) return "TRUE";
-    return "FALSE";
+    if (v.b) return std::string ("TRUE");
+    return std::string ("FALSE");
 }
 
 std::ostream& operator<< (std::ostream& os, Value v) { return os << v.s (); }
 
-Value Value::operator! () { return Value (!b ()); }
+Value Value::operator! () { return Value (!b (), l); }
 
 Value Value::operator+ (Value right) {
-    if (type == Value::STRING) return Value (s () + right.s ());
-    return Value (d () + right.d ());
+    if (type == Value::STRING) return Value (s () + right.s (), l);
+    return Value (d () + right.d (), l);
 }
 
-Value Value::operator- (Value right) { return Value (d () - right.d ()); }
+Value Value::operator- (Value right) { return Value (d () - right.d (), l); }
 
-Value Value::operator* (Value right) { return Value (d () * right.d ()); }
+Value Value::operator* (Value right) { return Value (d () * right.d (), l); }
 
-Value Value::operator/ (Value right) { return Value (d () / right.d ()); }
+Value Value::operator/ (Value right) { return Value (d () / right.d (), l); }
 
-Value Value::operator> (Value right) { return Value (d () > right.d ()); }
+Value Value::operator> (Value right) { return Value (d () > right.d (), l); }
 
-Value Value::operator< (Value right) { return Value (d () < right.d ()); }
+Value Value::operator< (Value right) { return Value (d () < right.d (), l); }
 
-Value Value::operator>= (Value right) { return Value (d () >= right.d ()); }
+Value Value::operator>= (Value right) { return Value (d () >= right.d (), l); }
 
-Value Value::operator<= (Value right) { return Value (d () <= right.d ()); }
+Value Value::operator<= (Value right) { return Value (d () <= right.d (), l); }
 
-Value Value::operator|| (Value right) { return Value (b () || right.b ()); }
+Value Value::operator|| (Value right) { return Value (b () || right.b (), l); }
 
-Value Value::operator&& (Value right) { return Value (b () && right.b ()); }
+Value Value::operator&& (Value right) { return Value (b () && right.b (), l); }
 
 Value Value::operator== (Value right) {
-    if (type != right.type) return Value (false);
+    if (type != right.type) return Value (false, l);
     switch (type) {
-    case Value::DOUBLE: return Value (d () == right.d ());
-    case Value::BOOL: return Value (b () == right.b ());
-    case Value::STRING: return Value (s ().compare (right.s ()));
+    case Value::DOUBLE: return Value (d () == right.d (), l);
+    case Value::BOOL: return Value (b () == right.b (), l);
+    case Value::STRING: return Value (s ().compare (right.s ()), l);
     }
-    return false;
+    return Value (false, l);
 }
 
 Value Value::operator!= (Value right) {
-    if (type != right.type) return Value (true);
+    if (type != right.type) return Value (true, l);
     switch (type) {
-    case Value::DOUBLE: return Value (d () != right.d ());
-    case Value::BOOL: return Value (b () != right.b ());
-    case Value::STRING: return Value (!s ().compare (right.s ()));
+    case Value::DOUBLE: return Value (d () != right.d (), l);
+    case Value::BOOL: return Value (b () != right.b (), l);
+    case Value::STRING: return Value (!s ().compare (right.s ()), l);
     }
-    return false;
+    return Value (false, l);
+}
+
+Value::~Value () {
+    l->dbg () << "Deleting value: " << s () << std::endl;
+    if (type == STRING) free (v.s);
+    l->dbg () << "Value deleted." << std::endl;
 }

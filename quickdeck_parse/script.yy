@@ -51,7 +51,7 @@ Environment* e;
 %type <s> statement statement_list
 
 %destructor { l->dbg() << "Destructor called > "; l->dbg()<<"Delete at " << @$ << ": " << $$->describe() << "... "; delete $$; l->dbg() << "Deleted." << std::endl; } <p> <s> statement expression
-%destructor { l->dbg() << "Destructor called > "; l->dbg()<<"Delete at " << @$ << ": " << $$ << "... "; delete $$; l->dbg() << "Deleted." << std::endl; } <c>
+%destructor { l->dbg() << "Destructor called > "; l->dbg()<<"Delete at " << @$ << ": " << $$ << "... "; free($$); l->dbg() << "Deleted." << std::endl; } <c>
 
 %{
 extern int yylex(yy::parser::semantic_type *yylval, yy::parser::location_type* yylloc);
@@ -64,7 +64,7 @@ statement	: IF expression statement			{ $$ = new If_Statement($2, $3, l); }
 		| IF expression statement ELSE statement	{ $$ = new If_Statement($2, $3, $5, l); }
 		| '{' statement_list '}'			{ $$ = $2; }
 		| '{' error '}'					{ error(@2,"Syntax error: code block discarded"); $$ = new Statement(l); }
-		| VARIABLE '=' expression ';'			{ $$ = new Assignment($1, $3, e, l); }
+		| VARIABLE '=' expression ';'			{ $$ = new Assignment($1, $3, e, l); free($1); }
 		| FUNCTION '(' parameter_list ')' ';'		{ $$ = new Function_Call($1, $3, e, l); }
 		| FUNCTION '(' ')' ';'				{ $$ = new Function_Call($1, e, l); }
 		| FUNCTION ';'					{ error(@1, "Function missing '()'. Assuming empty parameter list.");
@@ -78,8 +78,8 @@ statement_list	: statement statement_list			{ $1->link($2); $$ = $1; }
 
 expression	: BOOLEAN					{ $$ = new Boolean($1, l); }
 		| NUMBER					{ $$ = new Number($1, l); }
-		| STRING					{ $$ = new Text($1, l); }
-		| VARIABLE					{ $$ = new Variable($1, e, l); }
+		| STRING					{ $$ = new Text(std::string($1), l); free($1); }
+		| VARIABLE					{ $$ = new Variable($1, e, l); free($1); }
 		| NOT expression				{ $$ = new Not($2, l); }
 		| MINUS expression				{ $$ = new Negative($2, l); }
 		| expression PLUS expression			{ $$ = new Plus($1, $3, l); }
