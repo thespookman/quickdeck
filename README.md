@@ -53,7 +53,7 @@ Saves the canvas to the file specified. File type is inferred from extension. Al
 
 Draws a rectangle at (x, y) of size width x height. If fill is true, it will be filled, otherwise just an outline. Thickness is the thickness of the lines.
 
-### text ( text, font, x, y, colour)
+### text ( text, font, pointsize, x, y, colour)
 
 Draws text at (x, y). Font the path of a font file. If font is left as `""` you'll get the default system font.
 
@@ -88,13 +88,14 @@ and we run `params stats.csv`, we get three files:
 We can write a script `make_monsters.qd`:
 
 ```
-new(200,400);                                                                                                                       
+font="/usr/share/texmf/fonts/opentype/public/lm/lmroman5-regular.otf";
+new(200,400);
 image("/home/sam/pictures/background.png", 0, 0, 200, 400);
 rect(true, 0, 0, 200, 400, 1, backgroundColour+"88");
 rect(false, 5, 5, 190, 390, 1, "#000000");
-text(title, "", 10, 20, "#000000");
+text(title, font, 10, 10, 20, "#000000");
 image("/home/sam/pictures/"+title+".png", 10, 50, 180, 180);
-text("Power: "+power, "", 10, 300, "#000000");
+text("Power: "+power, font, 20, 10, 300, "#000000");
 save(title + ".png");
 ```
 

@@ -50,12 +50,12 @@ Value Function_Call::evaluate () {
                              p[6]->evaluate ().s ());
         break;
     case FUNC_TEXT:
-        if (p.size () < 5) {
-            l->err () << "TEXT function requires 5 arguments. Have " << p.size () << std::endl;
+        if (p.size () < 6) {
+            l->err () << "TEXT function requires 6 arguments. Have " << p.size () << std::endl;
             break;
         }
         e->canvas.text (p[0]->evaluate ().s (), p[1]->evaluate ().s (), p[2]->evaluate ().d (),
-                        p[3]->evaluate ().d (), p[4]->evaluate ().s ());
+                        p[3]->evaluate ().d (), p[4]->evaluate ().d (), p[5]->evaluate ().s ());
         break;
     case FUNC_IMAGE:
         if (p.size () < 5) {

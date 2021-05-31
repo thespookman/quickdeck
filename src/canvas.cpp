@@ -76,13 +76,15 @@ void Canvas::rectangle (bool fill, int x, int y, int width, int height, int thic
     }
 }
 
-void Canvas::text (std::string text, std::string font, int x, int y, std::string colour) {
+void Canvas::text (std::string text, std::string font, double size, int x, int y,
+                   std::string colour) {
     if (!check_init ("TEXT")) return;
     l->inf () << "Drawing text: " << text << std::endl;
     try {
         Color                 c (colour);
         std::vector<Drawable> draw_list;
         draw_list.push_back (DrawableFont (font));
+        draw_list.push_back (DrawablePointSize (size));
         draw_list.push_back (DrawableText (x, y, text));
         draw_list.push_back (DrawableStrokeColor (c));
         canvas.draw (draw_list);
