@@ -82,7 +82,7 @@ title, backgroundColour, power
 
 and we run `params stats.csv`, we get three files:  
 `goblin.qd` - `title = "goblin"; backgroundColour = "#00FF00"; power = "5";`  
-`troll.qd` - `title = "troll"; backgroundColour = "#FF0000"; power = "10";`
+`troll.qd` - `title = "troll"; backgroundColour = "#FF0000"; power = "10";`  
 `ogre.qd` - `title = "ogre"; backgroundColour = "#0000FF"; power = "15";`  
 
 We can write a script `make_monsters.qd`:
