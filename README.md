@@ -111,6 +111,9 @@ all: $(CARDS)
 
 %.png: %.qd make_monsters.qd
         ./quickdeck $< make_monsters.qd
+
+$(SCRIPTS): stats.csv
+        ./params stats.csv
 ```
 
 Now `make all` produces the following images:
