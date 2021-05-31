@@ -1,6 +1,8 @@
 #ifndef VALUE_H_
 #define VALUE_H_
 
+#include "SPKlog.h"
+
 #include <ostream>
 #include <string>
 
@@ -17,12 +19,15 @@ class Value {
     static constexpr int BOOL   = 1;
     static constexpr int STRING = 2;
     V                    v;
+    Logger*              l;
 
   public:
-    Value (double _v);
-    Value (int _v);
-    Value (bool _v);
-    Value (std::string _v);
+    Value (double _v, Logger* _l);
+    Value (int _v, Logger* _l);
+    Value (bool _v, Logger* _l);
+    Value (std::string _v, Logger* _l);
+    Value (const char* _v, Logger* _l);
+    Value (const Value& _v);
     double               d ();
     bool                 b ();
     std::string          s ();
@@ -40,5 +45,6 @@ class Value {
     Value                operator<= (Value right);
     Value                operator|| (Value right);
     Value                operator&& (Value right);
+    ~Value ();
 };
 #endif

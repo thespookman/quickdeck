@@ -34,7 +34,7 @@ Statement* Statement::get_next () { return next; }
 
 Value Statement::evaluate () {
     if (next) return next->evaluate ();
-    return Value (true);
+    return Value (true, l);
 }
 
 Statement::~Statement () {
@@ -47,7 +47,7 @@ Statement::~Statement () {
 
 Expression::Expression (Logger* _l) : l {_l} { description = "EXPRESSION "; }
 
-Value Expression::evaluate () { return Value (true); }
+Value Expression::evaluate () { return Value (true, l); }
 
 Expression::~Expression () { l->dbg () << "Deleting expression " << description << std::endl; }
 
@@ -57,7 +57,7 @@ Number::Number (double _value, Logger* _l) : Expression (_l) {
     l->dbg () << "NUMBER: " << value << std::endl;
 }
 
-Value Number::evaluate () { return Value (value); }
+Value Number::evaluate () { return Value (value, l); }
 
 Boolean::Boolean (bool _value, Logger* _l) : Expression (_l) {
     value       = _value;
@@ -65,7 +65,7 @@ Boolean::Boolean (bool _value, Logger* _l) : Expression (_l) {
     l->dbg () << "BOOLEAN: " << value << std::endl;
 }
 
-Value Boolean::evaluate () { return Value (value); }
+Value Boolean::evaluate () { return Value (value, l); }
 
 Text::Text (std::string _value, Logger* _l) : Expression (_l) {
     value       = _value;
@@ -73,7 +73,7 @@ Text::Text (std::string _value, Logger* _l) : Expression (_l) {
     l->dbg () << "TEXT: " << value << std::endl;
 }
 
-Value Text::evaluate () { return Value (value); }
+Value Text::evaluate () { return Value (value, l); }
 
 void Text::describe () { std::cout << '"' << value << '"' << std::endl; }
 
@@ -96,7 +96,7 @@ Value If_Statement::evaluate () {
     else if (else_do)
         else_do->evaluate ();
     if (next) return next->evaluate ();
-    return Value (true);
+    return Value (true, l);
 }
 
 If_Statement::If_Statement (Expression* _condition, Statement* _then, Logger* _l)
@@ -154,8 +154,9 @@ Assignment::Assignment (std::string _variable, Expression* _value, Environment* 
 
 Value Assignment::evaluate () {
     e->set_variable (variable, value->evaluate ());
+    l->dbg () << "Variable set" << std::endl;
     if (next) return next->evaluate ();
-    return Value (true);
+    return Value (true, l);
 }
 
 Assignment::~Assignment () {

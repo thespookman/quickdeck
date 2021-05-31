@@ -45,7 +45,7 @@ void process_line();
 %type <v> data
 
 %destructor { l->dbg() << "Destructor called > "; l->dbg()<<"Delete at " << @$ << ": " << $$->s() << "... "; delete $$; l->dbg() << "Deleted." << std::endl; } <v>
-%destructor { l->dbg() << "Destructor called > "; l->dbg()<<"Delete at " << @$ << ": " << $$ << "... "; delete $$; l->dbg() << "Deleted." << std::endl; } <c>
+%destructor { l->dbg() << "Destructor called > "; l->dbg()<<"Delete at " << @$ << ": " << $$ << "... "; free($$); l->dbg() << "Deleted." << std::endl; } <c>
 
 %{
 extern int yylex(yy::parser::semantic_type *yylval, yy::parser::location_type* yylloc);
@@ -60,8 +60,8 @@ data_file	: header_line data_lines 	{}
 header_line	: headers ENDL			{}
 		;
 
-headers		: VARIABLE			{ header_vec.push_back($1); }
-	   	| headers DELIM VARIABLE 	{ header_vec.push_back($3); }
+headers		: VARIABLE			{ header_vec.push_back($1); free($1); }
+	   	| headers DELIM VARIABLE 	{ header_vec.push_back($3); free($3); }
 		;
 
 data_lines	: data_line			{ process_line(); }
@@ -73,11 +73,16 @@ data_line	: data				{ data_vec.push_back($1); }
 	  	| data_line DELIM data		{ data_vec.push_back($3); }
 		;
 
-data		: STRING			{ $$ = new Value($1); }
-		| NUMBER	 		{ $$ = new Value($1); }
-		| BOOLEAN			{ $$ = new Value($1); }
+data		: STRING			{ $$ = new Value($1,l); free($1); }
+		| NUMBER	 		{ $$ = new Value($1,l); }
+		| BOOLEAN			{ $$ = new Value($1,l); }
 		;
 %%
+
+void clear_vec(){
+	for (Value* v : data_vec) delete v;
+	data_vec.clear();
+}
 
 void process_line(){
 	unsigned int cols=header_vec.size();
@@ -86,11 +91,11 @@ void process_line(){
 		exit(3);
 	}
 	l->dbg() << "Line: ";
-	for(Value* v:data_vec) l->dbg() << v << ", ";
+	for(Value* v : data_vec) l->dbg() << *v << ", ";
 	l->dbg() << std::endl;
 	if(data_vec.size()<cols) {
 		l->err()<<"Bad line. Skipping."<<std::endl;
-		data_vec.clear();
+		clear_vec();
 		return;
 	}
 	std::stringstream ss;
@@ -111,7 +116,7 @@ void process_line(){
 		ifs.close();
 		if(to_write.compare(old_data)==0) {
 			l->dbg() << file_name << " is unchanged. Skipping." << std::endl;
-			data_vec.clear();
+			clear_vec();
 			return;
 		}
 	} catch (std::exception& e) {
@@ -125,10 +130,10 @@ void process_line(){
 		l->err() << "Could not open "<< file_name << " for writing: " << std::endl;
 		l->err() << e.what() << std::endl;
 		l->err() << "Skipping." <<std::endl;
-		data_vec.clear();
+		clear_vec();
 		return;
 	}
-	data_vec.clear();
+	clear_vec();
 }
 
 int main (int argc, char** argv) {
@@ -153,6 +158,7 @@ int main (int argc, char** argv) {
 #endif
 	parser.parse();
 	l->dbg() << "Finished parse." << std::endl;
+	delete l;
 	return 0;
 }
 
