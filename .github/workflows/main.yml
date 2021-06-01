@@ -32,7 +32,7 @@ jobs:
           sudo apt remove imagemagick
           git clone https://github.com/ImageMagick/ImageMagick.git
           cd ImageMagick
-          ./configure --disable-shared --without-x --without-xml --without-tiff --without-bzlib --without-jpeg --without-png
+          ./configure --disable-shared --without-x --without-xml --without-tiff --without-bzlib --without-jpeg --without-png --without-zlib --without-wmf --without-freetype --without-lcms --without-lcms2  --without-lzma --without-dps --without-jbig --without-jp2
           make all
           sudo make install
           identify -list configure
