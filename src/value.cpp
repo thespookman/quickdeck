@@ -94,7 +94,7 @@ Value Value::operator== (Value right) {
     switch (type) {
     case Value::DOUBLE: return Value (d () == right.d (), l);
     case Value::BOOL: return Value (b () == right.b (), l);
-    case Value::STRING: return Value (s ().compare (right.s ()), l);
+    case Value::STRING: return Value (s ().compare (right.s ()) == 0, l);
     }
     return Value (false, l);
 }
@@ -104,7 +104,7 @@ Value Value::operator!= (Value right) {
     switch (type) {
     case Value::DOUBLE: return Value (d () != right.d (), l);
     case Value::BOOL: return Value (b () != right.b (), l);
-    case Value::STRING: return Value (!s ().compare (right.s ()), l);
+    case Value::STRING: return Value (s ().compare (right.s ()) != 0, l);
     }
     return Value (false, l);
 }
