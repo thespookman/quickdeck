@@ -35,9 +35,16 @@ jobs:
           ./configure --disable-shared
           make all
           sudo make install
+          identify -list configure
           
-      - name: Build and test
+      - name: Build
         run: |
           cd $GITHUB_WORKSPACE
+          Magick++-config --cxxflags --cppflags
+          Magick++-config --ldflags --libs
           make build
+      
+      - name: Test
+        run: |
+          cd $GITHUB_WORKSPACE
           make test
