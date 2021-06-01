@@ -28,9 +28,8 @@ jobs:
       # Build and test project
       - name: Build and test
         run: |
-          mkdir imagemagick
-          cd imagemagick
           git clone https://github.com/ImageMagick/ImageMagick.git
+          cd ImageMagick
           ./configure --disable-shared
           make all
           sudo make install
