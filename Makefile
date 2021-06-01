@@ -48,4 +48,5 @@ clean:
 	rm *.tab.hh *.tab.cc *.yy.c quickdeck quickdeck_debug params params_debug quickdeck_parse/*.hh param_parse/*.hh
 
 .PHONY: test
+test:
 	cd test && ./test.sh
