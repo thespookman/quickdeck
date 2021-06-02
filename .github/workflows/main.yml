@@ -28,8 +28,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt update
-          sudo apt install libjpeg
-          sudo apt install libpng
+          sudo apt install libjpeg-dev libpng-dev
 
       # Build and test project
       - name: Install ImageMagick
