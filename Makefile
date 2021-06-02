@@ -6,15 +6,17 @@ DEBUG = -g -O0 -DDEBUG_BUILD
 
 LINKER_FLAGS = -Llib -L/usr/local/lib -lSPKlog `Magick++-config --ldflags --libs`
 
-INCLUDES = -I. -Iinclude -Ilib -I/usr/local/include -I/usr/local/include/ImageMagick-7
+INCLUDES = -Iinclude -Ilib -I/usr/local/include -I/usr/local/include/ImageMagick-7
 
-QD_CPP_SRC = src/main.cpp src/ast.cpp src/canvas.cpp src/environment.cpp src/function_call.cpp src/operator.cpp src/value.cpp script.yy.c script.tab.cc
+QD_PARSER = quickdeck_parse/parser.tab.cc quickdeck_parse/lexer.yy.c
 
-QD_DEPS = $(QD_CPP_SRC) include/ast.h  include/canvas.h  include/environment.h  include/operator.h  include/parser.h  include/value.h quickdeck_parse/location.hh quickdeck_parse/position.hh quickdeck_parse/stack.hh
+QD_CPP_SRC = src/main.cpp src/ast.cpp src/canvas.cpp src/environment.cpp src/function_call.cpp src/operator.cpp src/value.cpp $(QD_PARSER)
 
-P_CPP_SRC = data.tab.cc data.yy.c src/value.cpp
+QD_DEPS = $(QD_CPP_SRC) include/ast.h  include/canvas.h  include/environment.h  include/operator.h  include/parser.h  include/value.h
 
-P_DEPS = $(P_CPP_SRC) include/data.h include/value.h param_parse/location.hh param_parse/position.hh param_parse/stack.hh
+P_CPP_SRC = param_parse/parser.tab.cc param_parse/lexer.yy.c src/value.cpp
+
+P_DEPS = $(P_CPP_SRC) include/data.h include/value.h
 
 .PHONY: all
 all: build debug
@@ -31,21 +33,27 @@ quickdeck: $(QD_DEPS)
 quickdeck_debug: $(QD_DEPS)
 	$(CC) $(DEBUG) $(COMPILER_FLAGS) -o $@ $(QD_CPP_SRC) $(INCLUDES) -Iquickdeck_parse $(LINKER_FLAGS)
 
-script.tab.cc script.yy.c quickdeck_parse/location.hh quickdeck_parse/position.hh quickdeck_parse/stack.hh: quickdeck_parse/script.yy quickdeck_parse/script.l
-	cd quickdeck_parse && make parser;
+quickdeck_parse/lexer.yy.c: quickdeck_parse/lexer.l quickdeck_parse/parser.tab.cc
+	flex -o $@ $<
+
+quickdeck_parse/parser.tab.cc: quickdeck_parse/parser.yy
+	cd quickdeck_parse && bison -d parser.yy && cd ..
 
 params: $(P_DEPS)
 	$(CC) $(COMPILER_FLAGS) -o $@ $(P_CPP_SRC) $(INCLUDES) -Iparam_parse $(LINKER_FLAGS)
 
-params_debug: data.yy.c data.tab.cc
+params_debug: $(P_DEPS)
 	$(CC) $(DEBUG) $(COMPILER_FLAGS) -o $@ $(P_CPP_SRC) $(INCLUDES) -Iparam_parse $(LINKER_FLAGS)
 
-data.tab.cc data.yy.c param_parse/location.hh param_parse/position.hh param_parse/stack.hh: param_parse/data.yy param_parse/data.l
-	cd param_parse && make parser;
+param_parse/lexer.yy.c: param_parse/lexer.l param_parse/parser.tab.cc
+	flex -o $@ $<
+
+param_parse/parser.tab.cc: param_parse/parser.yy
+	cd param_parse && bison -d parser.yy && cd ..
 
 .PHONY: clean
 clean:
-	rm *.tab.hh *.tab.cc *.yy.c quickdeck quickdeck_debug params params_debug quickdeck_parse/*.hh param_parse/*.hh
+	rm quickdeck_parse/parser.tab.cc quickdeck_parse/lexer.yy.c param_parse/parser.tab.cc param_parse/lexer.yy.c quickdeck quickdeck_debug params params_debug quickdeck_parse/*.hh param_parse/*.hh
 
 .PHONY: test
 test:
