@@ -1,0 +1,6 @@
+bool=true;
+dub=42;
+str="string";
+echo(bool);
+echo(dub);
+echo(str);

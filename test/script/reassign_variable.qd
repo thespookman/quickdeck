@@ -1,0 +1,11 @@
+variable=true;
+variable=false;
+echo(variable);
+variable=42;
+echo(variable);
+variable=-42;
+echo(variable);
+variable="Some text";
+echo(variable);
+variable="Other text";
+echo(variable);
