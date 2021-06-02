@@ -1,0 +1,9 @@
+echo("This"!="This");
+echo("This"!="That");
+echo(42!=42);
+echo(42!=84);
+echo(42!=-42);
+echo(-42!=-42);
+echo(true!=true);
+echo(false!=false);
+echo(true!=false);

@@ -1,0 +1,4 @@
+echo(true||true);
+echo(true||false);
+echo(false||true);
+echo(false||false);
