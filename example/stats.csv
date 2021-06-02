@@ -1,0 +1,4 @@
+title, backgroundColour, power
+"goblin", "#00FF00", "5"
+"troll", "#FF0000", "10"
+"ogre", "#0000FF", "15"

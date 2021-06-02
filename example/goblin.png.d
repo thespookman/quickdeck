@@ -1,0 +1,1 @@
+goblin.png: resources/background.png resources/goblin.png 
