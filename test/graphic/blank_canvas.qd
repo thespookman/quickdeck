@@ -1,0 +1,2 @@
+new(500,500);
+save(filename);
