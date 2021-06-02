@@ -43,19 +43,19 @@ Value::Value (const Value& _v) {
     }
 }
 
-double Value::d () {
+double Value::d () const {
     if (type == Value::DOUBLE) return v.d;
     if (type == Value::BOOL && v.b) return 1;
     return 0;
 }
 
-bool Value::b () {
+bool Value::b () const {
     if (type == Value::BOOL) return v.b;
     if (type == Value::DOUBLE && v.d != 0) return true;
     return false;
 }
 
-std::string Value::s () {
+std::string Value::s () const {
     if (type == Value::STRING) return std::string (v.s);
     if (type == Value::DOUBLE) return std::to_string (v.d);
     if (v.b) return std::string ("TRUE");
@@ -109,8 +109,18 @@ Value Value::operator!= (Value right) {
     return Value (false, l);
 }
 
+void Value::operator= (Value right) {
+    l    = right.l;
+    type = right.type;
+    switch (type) {
+    case DOUBLE: v.d = right.v.d; break;
+    case BOOL: v.b = right.v.b; break;
+    case STRING: v.s = strdup (right.v.s); break;
+    }
+}
+
 Value::~Value () {
-    l->dbg () << "Deleting value: " << s () << std::endl;
+    l->dbg () << "Deleting value: " << s () << " ( " << this << " )" << std::endl;
     if (type == STRING) free (v.s);
     l->dbg () << "Value deleted." << std::endl;
 }
