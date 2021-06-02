@@ -1,0 +1,1 @@
+troll.png: resources/background.png resources/troll.png 

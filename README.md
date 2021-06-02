@@ -77,6 +77,8 @@ Params is a utility for turning a csv file into a Quickdeck script of variable a
 
 # Using them together
 
+_All of the files for this example are included in the repo in `example/`. If you want to follow along, run `make build` at the base of the repo, cd to the example folder and do a `make clean`._
+
 Say we have a csv `stats.csv`
 
 ```
@@ -94,33 +96,33 @@ and we run `params stats.csv`, we get three files:
 We can write a script `make_monsters.qd`:
 
 ```
-font="/usr/share/texmf/fonts/opentype/public/lm/lmroman5-regular.otf";
 new(200,400);
-image("/home/sam/pictures/background.png", 0, 0, 200, 400);
+image("resources/background.png", 0, 0, 200, 400);
 rect(true, 0, 0, 200, 400, 1, backgroundColour+"88");
 rect(false, 5, 5, 190, 390, 1, "#000000");
-text(title, font, 10, 10, 20, "#000000");
-image("/home/sam/pictures/"+title+".png", 10, 50, 180, 180);
-text("Power: "+power, font, 20, 10, 300, "#000000");
+text(title, "", 10, 10, 20, "#000000");
+image("resources/"+title+".png", 10, 50, 180, 180);
+text("Power: "+power, "", 20, 10, 300, "#000000");
 save(title + ".png");
 ```
 
 And a Makefile:
 
 ```
-CARDS = goblin.png troll.png ogre.png                                                                                               
+CARDS = goblin.png troll.png ogre.png
 SCRIPTS = $(CARDS:.png=.qd)
+DEPS = $(CARDS:.png=.png.d)
 
 .PHONY: all
 all: $(CARDS)
 
--include $(CARDS:.png=.png.d)
+-include $(DEPS)
 
 %.png: %.qd make_monsters.qd
-        ./quickdeck $< make_monsters.qd
+        ../quickdeck $< make_monsters.qd
 
 $(SCRIPTS): stats.csv
-        ./params stats.csv
+        ../params stats.csv
 ```
 
 Now `make all` produces the following images:

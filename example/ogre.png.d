@@ -1,0 +1,1 @@
+ogre.png: resources/background.png resources/ogre.png 

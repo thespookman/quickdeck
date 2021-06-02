@@ -1,0 +1,9 @@
+new(200,400);
+image("resources/background.png", 0, 0, 200, 400);
+rect(true, 0, 0, 200, 400, 1, backgroundColour+"88");
+rect(false, 5, 5, 190, 390, 1, "#000000");
+text(title, "", 10, 10, 20, "#000000");
+image("resources/"+title+".png", 10, 50, 180, 180);
+text("Power: "+power, "", 20, 10, 300, "#000000");
+save(title + ".png");
+
