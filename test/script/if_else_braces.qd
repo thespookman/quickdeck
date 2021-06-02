@@ -1,0 +1,10 @@
+if(true){
+echo("Correct");
+} else {
+echo("Incorrect");
+}
+if(false) {
+echo("Incorrect");
+} else {
+echo("Correct");
+}

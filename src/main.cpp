@@ -1,7 +1,7 @@
 #include "ast.h"
 #include "environment.h"
 #include "parser.h"
-#include "script.tab.hh"
+#include "parser.tab.hh"
 
 #include <iostream>
 

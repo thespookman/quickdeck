@@ -4,15 +4,18 @@
 #include <iostream>
 
 Operator::Operator (std::string _op, Logger* _l) : Expression (_l) {
-    op = _op;
     l->dbg () << "OPERATOR " << op << std::endl;
+    op = _op;
 }
 
 Value Operator::evaluate () { return Value (true, l); }
 
-One_Operator::One_Operator (Expression* _operand, std::string _op, Logger* _l) : Operator (op, _l) {
+One_Operator::One_Operator (Expression* _operand, std::string _op, Logger* _l)
+    : Operator (_op, _l) {
+    l->dbg () << "Building single operand operator." << std::endl;
     operand     = _operand;
     description = "( " + op + operand->describe () + ") ";
+    l->dbg () << "OPERATOR " << description << std::endl;
 }
 
 One_Operator::~One_Operator () {

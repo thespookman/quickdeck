@@ -3,7 +3,7 @@
 #include <cstdlib>
 
 #include "data.h"
-#include "data.tab.hh"
+#include "parser.tab.hh"
 
 #define YY_DECL int yylex(yy::parser::semantic_type *yylval, yy::parser::location_type *yylloc)
 

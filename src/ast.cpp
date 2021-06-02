@@ -45,7 +45,11 @@ Statement::~Statement () {
     }
 }
 
-Expression::Expression (Logger* _l) : l {_l} { description = "EXPRESSION "; }
+Expression::Expression (Logger* _l) : l {_l} {
+    l->dbg () << "!" << std::endl;
+    description = "EXPRESSION ";
+    l->dbg () << description << std::endl;
+}
 
 Value Expression::evaluate () { return Value (true, l); }
 

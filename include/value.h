@@ -28,9 +28,9 @@ class Value {
     Value (std::string _v, Logger* _l);
     Value (const char* _v, Logger* _l);
     Value (const Value& _v);
-    double               d ();
-    bool                 b ();
-    std::string          s ();
+    double               d () const;
+    bool                 b () const;
+    std::string          s () const;
     friend std::ostream& operator<< (std::ostream& os, Value v);
     Value                operator! ();
     Value                operator+ (Value right);
@@ -45,6 +45,7 @@ class Value {
     Value                operator<= (Value right);
     Value                operator|| (Value right);
     Value                operator&& (Value right);
+    void                 operator= (Value right);
     ~Value ();
 };
 #endif

@@ -1,0 +1,3 @@
+echo("Concat "+"strings");
+echo("Concat "+""+"empty strings");
+echo("Concat "+"a "+"larger "+"number "+"of "+"strings"+".");
