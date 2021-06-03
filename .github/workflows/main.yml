@@ -28,7 +28,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt update
-          sudo apt install libjpeg-dev libpng-dev
+          sudo apt install autoconf pkg-config
 
       # Build and test project
       - name: Install ImageMagick
