@@ -4,7 +4,7 @@ COMPILER_FLAGS = -std=c++17 -Wall `Magick++-config --cxxflags --cppflags`
 
 DEBUG = -g -O0 -DDEBUG_BUILD
 
-LINKER_FLAGS = -Llib -L/usr/local/lib -lSPKlog
+LINKER_FLAGS = -Llib -L/usr/lib -L/usr/local/lib -lSPKlog
 
 QD_LINKER_FLAGS = $(LINKER_FLAGS) -ljpeg -lpng16 -lz -lm -lpthread -lgomp `Magick++-config --ldflags --libs`
 
