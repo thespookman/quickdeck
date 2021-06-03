@@ -4,7 +4,9 @@ COMPILER_FLAGS = -std=c++17 -Wall `Magick++-config --cxxflags --cppflags`
 
 DEBUG = -g -O0 -DDEBUG_BUILD
 
-LINKER_FLAGS = -Llib -L/usr/local/lib -lSPKlog `Magick++-config --ldflags --libs`
+LINKER_FLAGS = -Llib -L/usr/local/lib -lSPKlog
+
+QD_LINKER_FLAGS = $(LINKER_FLAGS) -ljpeg -lpng16 -lz -lm -lpthread -lgomp `Magick++-config --ldflags --libs`
 
 INCLUDES = -Iinclude -Ilib -I/usr/local/include -I/usr/local/include/ImageMagick-7
 
@@ -28,10 +30,10 @@ build: quickdeck params
 debug: quickdeck_debug params_debug
 
 quickdeck: $(QD_DEPS)
-	$(CC) $(COMPILER_FLAGS) -o $@ $(QD_CPP_SRC) $(INCLUDES) -Iquickdeck_parse $(LINKER_FLAGS)
+	$(CC) $(COMPILER_FLAGS) -o $@ $(QD_CPP_SRC) $(INCLUDES) -Iquickdeck_parse $(QD_LINKER_FLAGS)
 
 quickdeck_debug: $(QD_DEPS)
-	$(CC) $(DEBUG) $(COMPILER_FLAGS) -o $@ $(QD_CPP_SRC) $(INCLUDES) -Iquickdeck_parse $(LINKER_FLAGS)
+	$(CC) $(DEBUG) $(COMPILER_FLAGS) -o $@ $(QD_CPP_SRC) $(INCLUDES) -Iquickdeck_parse $(QD_LINKER_FLAGS)
 
 quickdeck_parse/lexer.yy.c: quickdeck_parse/lexer.l quickdeck_parse/parser.tab.cc
 	flex -o $@ $<
