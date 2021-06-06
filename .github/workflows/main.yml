@@ -30,12 +30,10 @@ jobs:
           sudo apt update
           sudo apt upgrade
           sudo apt install libopenjp2-7-dev
-          ls -l /usr/lib/x86_64-linux-gnu/libpng* /usr/lib/x86_64-linux-gnu/libjpeg*
 
       # Build and test project
       - name: Install ImageMagick
         run: |
-          sudo apt remove imagemagick
           cd ../..
           git clone https://github.com/ImageMagick/ImageMagick.git
           cd ImageMagick
