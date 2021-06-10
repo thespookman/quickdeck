@@ -28,7 +28,6 @@ jobs:
       - name: Update
         run: |
           sudo apt update
-          sudo apt upgrade
           sudo apt install libopenjp2-7-dev
 
       # Build and test project
