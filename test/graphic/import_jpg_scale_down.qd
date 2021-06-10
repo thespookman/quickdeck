@@ -1,0 +1,3 @@
+new(150,150);
+image("resources/example.jpg",0,0,150,150);
+save(filename);
