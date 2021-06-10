@@ -31,7 +31,7 @@ jobs:
           cd ../..
           git clone https://github.com/ImageMagick/ImageMagick.git
           cd ImageMagick
-          ./configure --disable-assert --disable-cipher --disable-dependency-tracking --disable-docs --disable-opencl --disable-openmp --disable-shared --enable-silent-rules --without-bzlib --without-djvu --without-dps --without-flif --without-fontconfig --without-fpx --without-freetype --without-gdi32 --without-heic --without-jbig --without-jp2 --without-lcms --without-lcms2 --without-lqr --without-lzma --without-openexr --without-pango --without-raqm --without-raw --without-rsvg --without-threads --without-tiff --without-webp --without-wmf --without-x --without-xml --without-zip ---without-zlib -without-zst 
+          ./configure --disable-assert --disable-cipher --disable-dependency-tracking --disable-docs --disable-opencl --disable-openmp --disable-shared --enable-silent-rules --without-bzlib --without-djvu --without-dps --without-flif --without-fontconfig --without-fpx --without-freetype --without-gdi32 --without-heic --without-jbig --without-jp2 --without-lcms --without-lcms2 --without-lqr --without-lzma --without-openexr --without-pango --without-raqm --without-raw --without-rsvg --without-threads --without-tiff --without-webp --without-wmf --without-x --without-xml --without-zip --without-zlib -without-zst 
           make all
           sudo make install
           
