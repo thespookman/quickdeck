@@ -8,7 +8,7 @@ DEBUG = -g -O0 -DDEBUG_BUILD
 
 LINKER_FLAGS = -Llib -L/usr/lib -L/usr/local/lib -lSPKlog
 
-QD_LINKER_FLAGS = $(LINKER_FLAGS) -ljpeg -lpng16 -lz -lm -lpthread -lgomp `Magick++-config --ldflags --libs`
+QD_LINKER_FLAGS = `Magick++-config --ldflags --libs` $(LINKER_FLAGS) -ljpeg -lpng16 -lz -lm -lpthread -lgomp 
 
 INCLUDES = -Iinclude -Ilib -I/usr/local/include 
 
