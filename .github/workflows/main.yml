@@ -25,18 +25,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
      
-      - name: Update
-        run: |
-          sudo apt update
-          sudo apt install libopenjp2-7-dev
-
       # Build and test project
       - name: Install ImageMagick
         run: |
           cd ../..
           git clone https://github.com/ImageMagick/ImageMagick.git
           cd ImageMagick
-          ./configure --disable-shared --without-x --without-xml --without-tiff --without-bzlib --without-zlib --without-wmf --without-freetype --without-lcms --without-lcms2  --without-lzma --without-dps --without-jbig --without-jp2 --without-lqr --without-djvu --without-fontconfig --without-openexr
+          ./configure --disable-assert --disable-cipher --disable-dependency-tracking --disable-docs --disable-opencl --disable-openmp --disable-shared --enable-silent-rules --without-bzlib --without-djvu --without-dps --without-flif --without-fontconfig --without-fpx --without-freetype --without-gdi32 --without-heic --without-jbig --without-lcms --without-lqr --without-lzma --without-openexr --without-openjp2 --without-pango --without-raqm --without-raw --without-rsvg --without-threads --without-tiff --without-webp --without-wmf --without-x --without-xml --without-zip --without-zlib -without-zstd
           make all
           sudo make install
           
